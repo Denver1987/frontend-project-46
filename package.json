@@ -1,0 +1,19 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "программа, определяющая разницу между двумя структурами данных",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Denver1987/frontend-project-46.git"
+  },
+  "author": "Denis Berekelya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Denver1987/frontend-project-46/issues"
+  },
+  "homepage": "https://github.com/Denver1987/frontend-project-46#readme"
+}
