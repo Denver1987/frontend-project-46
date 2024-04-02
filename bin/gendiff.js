@@ -1,3 +1,17 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
-console.log('Gendiff!!!');
+import { program } from 'commander';
+
+program
+  .version('1.0.0')
+  .name('gendiff')
+  .description('Compares two configuration files and shows a difference.');
+
+program.option('-f, --format [type]', 'output format');
+
+program.argument('<filepath1>')
+  .argument('<filepath2>');
+
+program.parse();
+
+console.log('gendiff!!!');
