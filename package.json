@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.1",
   "description": "программа, определяющая разницу между двумя структурами данных",
-  "main": "index.js",
+  "main": "bin/gendiff.js",
   "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
@@ -27,6 +27,7 @@
     "jest": "^29.7.0"
   },
   "dependencies": {
-    "commander": "^12.0.0"
+    "commander": "^12.0.0",
+    "lodash": "4.17.21"
   }
 }
