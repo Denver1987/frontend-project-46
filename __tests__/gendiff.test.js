@@ -13,11 +13,19 @@ function getFilePath(filename) {
 const testFilePath1 = getFilePath('file1.json');
 const testChengingPath1 = getFilePath('changing1.json');
 const testResultPath1 = getFilePath('result1.txt');
+const testEmptyPath = getFilePath('empty.json');
+const testResult1emptyPath = getFilePath('result1empty.txt');
 
 // const testFile1 = readFileSync(testFilePath1, 'utf8');
 // const testChenging1 = readFileSync(testChengingPath1, 'utf8');
 const testResult1 = readFileSync(testResultPath1, 'utf8');
+const testResult1empty = readFileSync(testResult1emptyPath, 'utf8');
+console.log(testResult1empty);
 
 test('test1', () => {
   expect(gendiff(testFilePath1, testChengingPath1)).toBe(testResult1);
+});
+
+test('testEmpty', () => {
+  expect(gendiff(testFilePath1, testEmptyPath)).toBe(testResult1empty);
 });
