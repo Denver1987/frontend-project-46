@@ -14,8 +14,8 @@ const testFilePath1 = getFilePath('file1.json');
 const testChengingPath1 = getFilePath('changing1.json');
 const testResultPath1 = getFilePath('result1.txt');
 
-const testFile1 = readFileSync(testFilePath1, 'utf8');
-const testChenging1 = readFileSync(testChengingPath1, 'utf8');
+// const testFile1 = readFileSync(testFilePath1, 'utf8');
+// const testChenging1 = readFileSync(testChengingPath1, 'utf8');
 const testResult1 = readFileSync(testResultPath1, 'utf8');
 
 test('test1', () => {

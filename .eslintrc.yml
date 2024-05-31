@@ -5,8 +5,9 @@ extends: airbnb-base
 parserOptions:
   ecmaVersion: latest
   sourceType: module
-plugins: 
+plugins:
   - import
+  - jest
 rules:
   no-console: 0
   import/extensions: 0
