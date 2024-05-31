@@ -11,3 +11,13 @@ plugins:
 rules:
   no-console: 0
   import/extensions: 0
+  no-underscore-dangle:
+    - error
+    - allow: ['__filename', '__dirname']
+overrides:
+  - files:
+      - __tests__/**/*
+    plugins:
+      - jest
+    env:
+      jest/globals: true
