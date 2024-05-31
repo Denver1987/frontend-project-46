@@ -15,7 +15,7 @@ export default function showDifference(file1, file2) {
     if (Object.hasOwn(obj1, key) && !Object.hasOwn(obj2, key)) return `${previous}\n  - ${key}: ${obj1[key]}`;
     if (!Object.hasOwn(obj1, key) && Object.hasOwn(obj2, key)) return `${previous}\n  + ${key}: ${obj2[key]}`;
     if (obj1[key] === obj2[key]) return `${previous}\n    ${key}: ${obj1[key]}`;
-    if (obj1[key] !== obj2[key]) return `${previous}\n  - ${key}: ${obj1[key]} \n  + ${key}: ${obj2[key]}`;
+    if (obj1[key] !== obj2[key]) return `${previous}\n  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
   }, '');
-  return `{${result}\n}`;
+  return `{${result}\n}\n`;
 }
