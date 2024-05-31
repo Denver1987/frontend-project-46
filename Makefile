@@ -9,3 +9,6 @@ lint:
 
 publish:
 	npm publish --dry-run
+
+test:
+	npm run test
