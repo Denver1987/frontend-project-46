@@ -7,7 +7,6 @@ parserOptions:
   sourceType: module
 plugins:
   - import
-  - jest
 rules:
   no-console: 0
   import/extensions: 0
@@ -17,7 +16,5 @@ rules:
 overrides:
   - files:
       - __tests__/**/*
-    plugins:
-      - jest
     env:
-      jest/globals: true
+      jest: true

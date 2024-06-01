@@ -20,7 +20,6 @@ const testResult1emptyPath = getFilePath('result1empty.txt');
 // const testChenging1 = readFileSync(testChengingPath1, 'utf8');
 const testResult1 = readFileSync(testResultPath1, 'utf8');
 const testResult1empty = readFileSync(testResult1emptyPath, 'utf8');
-console.log(testResult1empty);
 
 test('test1', () => {
   expect(gendiff(testFilePath1, testChengingPath1)).toBe(testResult1);
