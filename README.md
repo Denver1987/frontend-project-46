@@ -5,4 +5,6 @@
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/1a90c7c9a4555eaa3db2/test_coverage)](https://codeclimate.com/github/Denver1987/frontend-project-46/test_coverage)
 
-[Asciinema gendiff](https://asciinema.org/a/jrWIsSfRIUPkSjyeDLaE14Fyv)
+[Asciinema gendiff json](https://asciinema.org/a/jrWIsSfRIUPkSjyeDLaE14Fyv)
+
+[Asciinema gendiff yaml](https://asciinema.org/a/Vt2beZZTf5QhaZNHlJzntMiLj)

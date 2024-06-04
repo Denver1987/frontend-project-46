@@ -10,21 +10,26 @@ function getFilePath(filename) {
   return join(__dirname, '..', '__fixtures__', filename);
 }
 
-const testFilePath1 = getFilePath('file1.json');
-const testChengingPath1 = getFilePath('changing1.json');
-const testResultPath1 = getFilePath('result1.txt');
-const testEmptyPath = getFilePath('empty.json');
-const testResult1emptyPath = getFilePath('result1empty.txt');
+const testFilePath1json = getFilePath('file1.json');
 
-// const testFile1 = readFileSync(testFilePath1, 'utf8');
-// const testChenging1 = readFileSync(testChengingPath1, 'utf8');
-const testResult1 = readFileSync(testResultPath1, 'utf8');
-const testResult1empty = readFileSync(testResult1emptyPath, 'utf8');
+const testChangingPath1json = getFilePath('changing1.json');
+
+const testResultPath1json = getFilePath('result1json.txt');
+
+const testResult1json = readFileSync(testResultPath1json, 'utf8');
 
 test('test1', () => {
-  expect(gendiff(testFilePath1, testChengingPath1)).toBe(testResult1);
+  expect(gendiff(testFilePath1json, testChangingPath1json)).toBe(testResult1json);
 });
 
-test('testEmpty', () => {
-  expect(gendiff(testFilePath1, testEmptyPath)).toBe(testResult1empty);
+const testFilePath1yaml = getFilePath('file1.yml');
+
+const testChangingPath1yaml = getFilePath('changing1.yml');
+
+const testResultPath1yaml = getFilePath('result1yaml.txt');
+
+const testResult1yaml = readFileSync(testResultPath1yaml, 'utf-8');
+
+test('testYaml', () => {
+  expect(gendiff(testFilePath1yaml, testChangingPath1yaml)).toBe(testResult1yaml);
 });

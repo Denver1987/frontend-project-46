@@ -1,9 +1,6 @@
-import { readFileSync } from 'node:fs';
+// import { readFileSync } from 'node:fs';
 import _ from 'lodash';
-
-function parseJSONFile(filepath) {
-  return JSON.parse(readFileSync(filepath, 'utf8'));
-}
+import parseFile from './parsers.js';
 
 // eslint-disable-next-line consistent-return
 function reduce(previous, key, obj1, obj2) {
@@ -14,8 +11,8 @@ function reduce(previous, key, obj1, obj2) {
 }
 
 export default function showDifference(file1, file2) {
-  const obj1 = parseJSONFile(file1);
-  const obj2 = parseJSONFile(file2);
+  const obj1 = parseFile(file1);
+  const obj2 = parseFile(file2);
   let keys = _.union(Object.keys(obj1), Object.keys(obj2));
   keys = _.sortBy(keys);
   const result = keys.reduce((previous, key) => reduce(previous, key, obj1, obj2), '');
