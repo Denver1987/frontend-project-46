@@ -10,7 +10,7 @@ program
   .name('gendiff')
   .description('Compares two configuration files and shows a difference.');
 
-program.option('-f, --format [type]', 'output format');
+program.option('-f, --format [type]', 'output format', 'stylish');
 
 program.argument('<filepath1>')
   .argument('<filepath2>');

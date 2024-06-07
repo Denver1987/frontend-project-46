@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for gendiff.js</title>
+    <title>Code coverage report for parsers.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> gendiff.js</h1>
+        <h1><a href="index.html">All files</a> parsers.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>20/20</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>20/20</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -76,52 +76,31 @@
 <a name='L11'></a><a href='#L11'>11</a>
 <a name='L12'></a><a href='#L12'>12</a>
 <a name='L13'></a><a href='#L13'>13</a>
-<a name='L14'></a><a href='#L14'>14</a>
-<a name='L15'></a><a href='#L15'>15</a>
-<a name='L16'></a><a href='#L16'>16</a>
-<a name='L17'></a><a href='#L17'>17</a>
-<a name='L18'></a><a href='#L18'>18</a>
-<a name='L19'></a><a href='#L19'>19</a>
-<a name='L20'></a><a href='#L20'>20</a>
-<a name='L21'></a><a href='#L21'>21</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L14'></a><a href='#L14'>14</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// import { readFileSync } from 'node:fs';
-import _ from 'lodash';
-import parseFile from './parsers.js';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import path from 'node:path';
+import yaml from 'js-yaml';
+import { readFileSync } from 'node:fs';
 &nbsp;
-// eslint-disable-next-line consistent-return
-function reduce(previous, key, obj1, obj2) {
-  if (Object.hasOwn(obj1, key) &amp;&amp; !Object.hasOwn(obj2, key)) return `${previous}\n  - ${key}: ${obj1[key]}`;
-  if (!Object.hasOwn(obj1, key) &amp;&amp; Object.hasOwn(obj2, key)) return `${previous}\n  + ${key}: ${obj2[key]}`;
-  if (obj1[key] === obj2[key]) return `${previous}\n    ${key}: ${obj1[key]}`;
-  if (obj1[key] !== obj2[key]) return `${previous}\n  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}`;
-}
-&nbsp;
-export default function showDifference(file1, file2) {
-  const obj1 = parseFile(file1);
-  const obj2 = parseFile(file2);
-  let keys = _.union(Object.keys(obj1), Object.keys(obj2));
-  keys = _.sortBy(keys);
-  const result = keys.reduce((previous, key) =&gt; reduce(previous, key, obj1, obj2), '');
-  return `{${result}\n}\n`;
+export default function parseFile(file) {
+  if (path.extname(file) === '.json') {
+    return JSON.parse(readFileSync(file, 'utf8'));
+  }
+  if (path.extname(file) === '.yml' || path.extname(file) === '.yaml') {
+    return yaml.load(readFileSync(file, 'utf-8'));
+  }
+  return -1;
 }
 &nbsp;</pre></td></tr></table></pre>
 
