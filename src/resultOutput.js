@@ -14,15 +14,23 @@ export function printObject(obj, level) {
   return `${result}\n${indent.repeat(level - 1)}}`;
 }
 
-// function printDeleted(indent, level, key ) {
-//   return `${indent.repeat(level - 1)}  - ${key}: ${printObject(obj1[key], nextLevel)}`;
-// }
-
 export function formStylish(changings, obj1, obj2, level) {
   const keys = _.sortBy(Object.keys(changings));
   const indent = '    ';
   let result = '';
   const nextLevel = level + 1;
+
+  function printAdded(key) {
+    if (isObject(obj2[key])) {
+      result += `\n${indent.repeat(level - 1)}  + ${key}: ${printObject(obj2[key], nextLevel)}`;
+    } else result += `\n${indent.repeat(level - 1)}  + ${key}: ${obj2[key]}`;
+  }
+  function printDelete(key) {
+    if (isObject(obj1[key])) {
+      result += `\n${indent.repeat(level - 1)}  - ${key}: ${printObject(obj1[key], nextLevel)}`;
+    } else result += `\n${indent.repeat(level - 1)}  - ${key}: ${obj1[key]}`;
+  }
+
   keys.forEach((key) => {
     if (isObject(obj1[key]) && isObject(obj2[key])) {
       result += `\n${indent.repeat(level - 1)}    ${key}: ${formStylish(differenceObjects(obj1[key], obj2[key]), obj1[key], obj2[key], nextLevel)}`;
@@ -34,13 +42,9 @@ export function formStylish(changings, obj1, obj2, level) {
       } else result += `\n${indent.repeat(level - 1)}  - ${key}: ${obj1[key]}\n${indent.repeat(level - 1)}  + ${key}: ${obj2[key]}`;
     } else if (changings[key] === 'unchanged') result += `\n${indent.repeat(level - 1)}    ${key}: ${obj1[key]}`;
     else if (changings[key] === 'added') {
-      if (isObject(obj2[key])) {
-        result += `\n${indent.repeat(level - 1)}  + ${key}: ${printObject(obj2[key], nextLevel)}`;
-      } else result += `\n${indent.repeat(level - 1)}  + ${key}: ${obj2[key]}`;
+      printAdded(key);
     } else if (changings[key] === 'deleted') {
-      if (isObject(obj1[key])) {
-        result += `\n${indent.repeat(level - 1)}  - ${key}: ${printObject(obj1[key], nextLevel)}`;
-      } else result += `\n${indent.repeat(level - 1)}  - ${key}: ${obj1[key]}`;
+      printDelete(key);
     }
   });
   return `{${result}\n${indent.repeat(level - 1)}}`;
