@@ -14,6 +14,10 @@ export function printObject(obj, level) {
   return `${result}\n${indent.repeat(level - 1)}}`;
 }
 
+// function printDeleted(indent, level, key ) {
+//   return `${indent.repeat(level - 1)}  - ${key}: ${printObject(obj1[key], nextLevel)}`;
+// }
+
 export function formStylish(changings, obj1, obj2, level) {
   const keys = _.sortBy(Object.keys(changings));
   const indent = '    ';

@@ -45,3 +45,15 @@ const testResult1jsonComp = readFileSync(testResultPath1jsonComp, 'utf-8');
 test('testJsonComplex', () => {
   expect(gendiff(testFilePath1jsonComp, testChangingPath1jsonComp)).toBe(testResult1jsonComp);
 });
+
+const testFilePath1yamlComp = getFilePath('yamlComplex/file1.yml');
+
+const testChangingPath1yamlComp = getFilePath('yamlComplex/changing1.yml');
+
+const testResultPath1yamlComp = getFilePath('yamlComplex/result1.txt');
+
+const testResult1yamlComp = readFileSync(testResultPath1yamlComp, 'utf-8');
+
+test('testYamlComplex', () => {
+  expect(gendiff(testFilePath1yamlComp, testChangingPath1yamlComp)).toBe(testResult1yamlComp);
+});
