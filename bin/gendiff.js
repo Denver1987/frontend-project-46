@@ -15,7 +15,10 @@ program.option('-f, --format [type]', 'output format', 'stylish');
 program.argument('<filepath1>')
   .argument('<filepath2>');
 
+const options = program.opts();
+
 program.action((filepath1, filepath2) => {
   console.log(showDifference(filepath1, filepath2));
+  // console.log(options.format);
 });
 program.parse(process.argv);

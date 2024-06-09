@@ -8,3 +8,5 @@
 [Asciinema gendiff json](https://asciinema.org/a/jrWIsSfRIUPkSjyeDLaE14Fyv)
 
 [Asciinema gendiff yaml](https://asciinema.org/a/Vt2beZZTf5QhaZNHlJzntMiLj)
+
+[Asciinema gendiff файлы с вложенностью](https://asciinema.org/a/sGZwsSGdqJkeBOfyu8U5coKzn)
