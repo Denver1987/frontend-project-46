@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { isObject, differenceObjects } from './differencers.js';
+import { isObject, differenceObjects } from '../differencers.js';
 
 const INDENT = '    ';
 

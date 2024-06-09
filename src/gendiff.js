@@ -1,6 +1,6 @@
 import parseFile from './parsers.js';
 import { differenceObjects } from './differencers.js';
-import { formStylish } from './resultOutput.js';
+import { formStylish } from './formatters/stylish.js';
 import formPlain from './formatters/plain.js';
 
 // eslint-disable-next-line consistent-return

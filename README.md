@@ -10,3 +10,5 @@
 [Asciinema gendiff yaml](https://asciinema.org/a/Vt2beZZTf5QhaZNHlJzntMiLj)
 
 [Asciinema gendiff файлы с вложенностью](https://asciinema.org/a/sGZwsSGdqJkeBOfyu8U5coKzn)
+
+[Asciinema gendiff вывод plain](https://asciinema.org/a/25OjROoh4LwhpzT5GaxfDyenn)
