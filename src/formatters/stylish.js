@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { isObject, differenceObjects } from '../differencers.js';
+import { isObject } from '../differencers.js';
 
 const INDENT = '    ';
 
@@ -15,41 +15,36 @@ export function printObject(obj, level) {
 }
 
 function printUnchanged(key, obj1, level) {
-  return `\n${INDENT.repeat(level - 1)}    ${key}: ${obj1[key]}`;
+  return `\n${INDENT.repeat(level - 1)}    ${key}: ${obj1}`;
 }
 
 function printAdded(key, obj2, level) {
-  if (isObject(obj2[key])) {
-    return `\n${INDENT.repeat(level - 1)}  + ${key}: ${printObject(obj2[key], level + 1)}`;
-  } return `\n${INDENT.repeat(level - 1)}  + ${key}: ${obj2[key]}`;
+  if (isObject(obj2)) {
+    return `\n${INDENT.repeat(level - 1)}  + ${key}: ${printObject(obj2, level + 1)}`;
+  } return `\n${INDENT.repeat(level - 1)}  + ${key}: ${obj2}`;
 }
 
 function printDelete(key, obj1, level) {
-  if (isObject(obj1[key])) {
-    return `\n${INDENT.repeat(level - 1)}  - ${key}: ${printObject(obj1[key], level + 1)}`;
-  } return `\n${INDENT.repeat(level - 1)}  - ${key}: ${obj1[key]}`;
+  if (isObject(obj1)) {
+    return `\n${INDENT.repeat(level - 1)}  - ${key}: ${printObject(obj1, level + 1)}`;
+  } return `\n${INDENT.repeat(level - 1)}  - ${key}: ${obj1}`;
 }
 
 function printChanged(key, obj1, obj2, level) {
   return `${printDelete(key, obj1, level)}${printAdded(key, obj2, level)}`;
 }
 
-function printInnerChangedObject(key, obj1, obj2, level) {
-  // eslint-disable-next-line no-use-before-define
-  return `\n${INDENT.repeat(level - 1)}    ${key}: ${formStylish(differenceObjects(obj1[key], obj2[key]), obj1[key], obj2[key], level + 1)}`;
-}
-
-export function formStylish(changings, obj1, obj2, level = 1) {
+export function formStylish(changings, level = 1) {
   const keys = _.sortBy(Object.keys(changings));
   let result = '';
 
   keys.forEach((key) => {
-    if (isObject(obj1[key]) && isObject(obj2[key])) {
-      result += printInnerChangedObject(key, obj1, obj2, level);
-    } else if (changings[key] === 'changed') result += printChanged(key, obj1, obj2, level);
-    else if (changings[key] === 'unchanged') result += printUnchanged(key, obj1, level);
-    else if (changings[key] === 'added') result += printAdded(key, obj2, level);
-    else if (changings[key] === 'deleted') result += printDelete(key, obj1, level);
+    if (changings[key].status === 'nested') {
+      result += `\n${INDENT.repeat(level - 1)}    ${key}: ${formStylish(changings[key].value, level + 1)}`;
+    } else if (changings[key].status === 'changed') result += printChanged(key, changings[key].oldValue, changings[key].newValue, level);
+    else if (changings[key].status === 'unchanged') result += printUnchanged(key, changings[key].value, level);
+    else if (changings[key].status === 'added') result += printAdded(key, changings[key].newValue, level);
+    else if (changings[key].status === 'deleted') result += printDelete(key, changings[key].oldValue, level);
   });
   return `{${result}\n${INDENT.repeat(level - 1)}}`;
 }

@@ -9,6 +9,7 @@ export default function showDifference(file1, file2, format) {
   const obj2 = parseFile(file2);
 
   const changings = differenceObjects(obj1, obj2);
-  if (format === 'stylish') return `${formStylish(changings, obj1, obj2)}\n`;
-  if (format === 'plain') return `${formPlain(changings, obj1, obj2)}`;
+  if (format === 'stylish') return `${formStylish(changings)}\n`;
+  if (format === 'plain') return `${formPlain(changings)}`;
+  // return changings;
 }
