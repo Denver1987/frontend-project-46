@@ -35,5 +35,5 @@ export default function formPlain(changingsTree) {
     });
     return result;
   }
-  return iter(changingsTree, propPrefixInitial);
+  return `${iter(changingsTree, propPrefixInitial).slice(0, -1)}`;
 }
