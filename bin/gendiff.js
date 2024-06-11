@@ -3,7 +3,7 @@
 import { program } from 'commander';
 // import path from 'node:path';
 
-import showDifference from '../src/gendiff.js';
+import genDiff from '../src/gendiff.js';
 
 program
   .version('1.0.0')
@@ -18,7 +18,7 @@ program.argument('<filepath1>')
 const options = program.opts();
 
 program.action((filepath1, filepath2) => {
-  console.log(showDifference(filepath1, filepath2, options.format));
+  console.log(genDiff(filepath1, filepath2, options.format));
   // console.log(options);
 });
 program.parse();

@@ -4,7 +4,7 @@ import { formStylish } from './formatters/stylish.js';
 import formPlain from './formatters/plain.js';
 
 // eslint-disable-next-line consistent-return
-export default function showDifference(file1, file2, format) {
+export default function genDiff(file1, file2, format) {
   const obj1 = parseFile(file1);
   const obj2 = parseFile(file2);
 
