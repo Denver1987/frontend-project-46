@@ -34,17 +34,22 @@ function printChanged(key, obj1, obj2, level) {
   return `${printDelete(key, obj1, level)}${printAdded(key, obj2, level)}`;
 }
 
-export function formStylish(changings, level = 1) {
-  const keys = _.sortBy(Object.keys(changings));
-  let result = '';
+export function formStylish(changingsTree) {
+  const levelInitial = 1;
 
-  keys.forEach((key) => {
-    if (changings[key].status === 'nested') {
-      result += `\n${INDENT.repeat(level - 1)}    ${key}: ${formStylish(changings[key].value, level + 1)}`;
-    } else if (changings[key].status === 'changed') result += printChanged(key, changings[key].oldValue, changings[key].newValue, level);
-    else if (changings[key].status === 'unchanged') result += printUnchanged(key, changings[key].value, level);
-    else if (changings[key].status === 'added') result += printAdded(key, changings[key].newValue, level);
-    else if (changings[key].status === 'deleted') result += printDelete(key, changings[key].oldValue, level);
-  });
-  return `{${result}\n${INDENT.repeat(level - 1)}}`;
+  function iter(changings, level) {
+    const keys = _.sortBy(Object.keys(changings));
+    let result = '';
+
+    keys.forEach((key) => {
+      if (changings[key].status === 'nested') {
+        result += `\n${INDENT.repeat(level - 1)}    ${key}: ${iter(changings[key].value, level + 1)}`;
+      } else if (changings[key].status === 'changed') result += printChanged(key, changings[key].oldValue, changings[key].newValue, level);
+      else if (changings[key].status === 'unchanged') result += printUnchanged(key, changings[key].value, level);
+      else if (changings[key].status === 'added') result += printAdded(key, changings[key].newValue, level);
+      else if (changings[key].status === 'deleted') result += printDelete(key, changings[key].oldValue, level);
+    });
+    return `{${result}\n${INDENT.repeat(level - 1)}}`;
+  }
+  return iter(changingsTree, levelInitial);
 }

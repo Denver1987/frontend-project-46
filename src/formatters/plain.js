@@ -21,15 +21,19 @@ function printChanged(prop, oldValue, newValue, propPrefix) {
   return `Property '${propPrefix}${prop}' was updated. From ${closeInBrackets(oldValue)} to ${closeInBrackets(newValue)}\n`;
 }
 
-export default function formPlain(changings, propPrefix = '') {
-  const keys = _.sortBy(Object.keys(changings));
-  let result = '';
-  keys.forEach((key) => {
-    if (changings[key].status === 'nested') {
-      result += formPlain(changings[key].value, `${propPrefix}${key}.`);
-    } else if (changings[key].status === 'added') result += `${printAdded(key, changings[key].newValue, propPrefix)}`;
-    else if (changings[key].status === 'deleted') result += `${printDeleted(key, propPrefix)}`;
-    else if (changings[key].status === 'changed') result += `${printChanged(key, changings[key].oldValue, changings[key].newValue, propPrefix)}`;
-  });
-  return result;
+export default function formPlain(changingsTree) {
+  const propPrefixInitial = '';
+  function iter(changings, propPrefix) {
+    const keys = _.sortBy(Object.keys(changings));
+    let result = '';
+    keys.forEach((key) => {
+      if (changings[key].status === 'nested') {
+        result += iter(changings[key].value, `${propPrefix}${key}.`);
+      } else if (changings[key].status === 'added') result += `${printAdded(key, changings[key].newValue, propPrefix)}`;
+      else if (changings[key].status === 'deleted') result += `${printDeleted(key, propPrefix)}`;
+      else if (changings[key].status === 'changed') result += `${printChanged(key, changings[key].oldValue, changings[key].newValue, propPrefix)}`;
+    });
+    return result;
+  }
+  return iter(changingsTree, propPrefixInitial);
 }

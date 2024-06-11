@@ -11,5 +11,4 @@ export default function showDifference(file1, file2, format) {
   const changings = differenceObjects(obj1, obj2);
   if (format === 'stylish') return `${formStylish(changings)}\n`;
   if (format === 'plain') return `${formPlain(changings)}`;
-  // return changings;
 }
