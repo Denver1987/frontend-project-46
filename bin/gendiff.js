@@ -21,4 +21,4 @@ program.action((filepath1, filepath2) => {
   console.log(showDifference(filepath1, filepath2, options.format));
   // console.log(options);
 });
-program.parse(process.argv);
+program.parse();
