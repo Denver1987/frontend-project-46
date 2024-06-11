@@ -2,13 +2,13 @@
   "name": "@hexlet/code",
   "version": "1.0.1",
   "description": "программа, определяющая разницу между двумя структурами данных",
-  "main": "bin/gendiff.js",
+  "main": "src/gendiff.js",
   "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
   "scripts": {
-    "test": "npx jest"
+    "test": "npx jest --colors"
   },
   "repository": {
     "type": "git",
