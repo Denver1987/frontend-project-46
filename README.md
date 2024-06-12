@@ -12,3 +12,5 @@
 [Asciinema gendiff файлы с вложенностью](https://asciinema.org/a/sGZwsSGdqJkeBOfyu8U5coKzn)
 
 [Asciinema gendiff вывод plain](https://asciinema.org/a/25OjROoh4LwhpzT5GaxfDyenn)
+
+[Asciinema gendiff вывод json](https://asciinema.org/a/c6l9tAHSbd2muGi2Lq9Ivrei2)
