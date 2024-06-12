@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import isObject from '../utils.js';
 import {
   getStatus,
@@ -32,9 +31,8 @@ export default function formPlain(changingsTree) {
   const propPrefixInitial = '';
   console.log(changingsTree);
   function iter(changings, propPrefix) {
-    // eslint-disable-next-line array-callback-return
-    return changings.reduce((previous ,key) => {
-      console.log(key, ' | ', previous)
+    // eslint-disable-next-line array-callback-return, consistent-return
+    return changings.reduce((previous, key) => {
       if (getStatus(key) === 'nested') {
         const newPropPrefix = `${propPrefix}${getKeyName(key)}.`;
         return `${previous}${iter(getInnerChangings(key), newPropPrefix)}`;
