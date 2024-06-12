@@ -4,30 +4,26 @@ import isObject from './utils.js';
 // eslint-disable-next-line consistent-return
 function getChanging(key, obj1, obj2) {
   if (Object.hasOwn(obj1, key) && !Object.hasOwn(obj2, key)) {
-    return [key,
-      {
-        status: 'deleted',
-        oldValue: obj1[key],
-      }];
+    return [key, {
+      status: 'deleted',
+      oldValue: obj1[key],
+    }];
   } if (!Object.hasOwn(obj1, key) && Object.hasOwn(obj2, key)) {
-    return [key,
-      {
-        status: 'added',
-        newValue: obj2[key],
-      }];
+    return [key, {
+      status: 'added',
+      newValue: obj2[key],
+    }];
   } if (obj1[key] === obj2[key]) {
-    return [key,
-      {
-        status: 'unchanged',
-        value: obj2[key],
-      }];
+    return [key, {
+      status: 'unchanged',
+      value: obj2[key],
+    }];
   } if (obj1[key] !== obj2[key]) {
-    return [key,
-      {
-        status: 'changed',
-        oldValue: obj1[key],
-        newValue: obj2[key],
-      }];
+    return [key, {
+      status: 'changed',
+      oldValue: obj1[key],
+      newValue: obj2[key],
+    }];
   }
 }
 
