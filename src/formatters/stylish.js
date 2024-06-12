@@ -8,53 +8,41 @@ import {
   getInnerChangings,
 } from '../differencers.js';
 
+const settings = {
+  indent: '    ',
+};
+
+const prefixes = {
+  unchanged: '    ',
+  deleted: '  - ',
+  added: '  + ',
+};
+
+function printObject(obj, level) {
+  const keys = Object.keys(obj);
+  const result = keys.reduce((previous, key) => {
+    if (isObject(obj[key])) {
+      return `${previous}\n${settings.indent.repeat(level - 1)}    ${key}: ${printObject(obj[key], level + 1)}`;
+    }
+    return `${previous}\n${settings.indent.repeat(level - 1)}    ${key}: ${obj[key]}`;
+  }, '');
+  return `{${result}\n${settings.indent.repeat(level - 1)}}`;
+}
+
+function printSingleLine(key, value, level, prefix) {
+  if (isObject(value)) {
+    return `\n${settings.indent.repeat(level - 1)}${prefix}${key}: ${printObject(value, level + 1)}`;
+  }
+  return `\n${settings.indent.repeat(level - 1)}${prefix}${key}: ${value}`;
+}
+
+function printChanged(key, obj1, obj2, level) {
+  return `${printSingleLine(key, obj1, level, prefixes.deleted)}${printSingleLine(key, obj2, level, prefixes.added)}`;
+}
+
 export default function formStylish(changingsTree) {
   const levelInitial = 1;
-  const indent = '    ';
-
-  const prefixes = {
-    unchanged: '    ',
-    deleted: '  - ',
-    added: '  + ',
-  };
-
-  function printObject(obj, level) {
-    const keys = Object.keys(obj);
-    const result = keys.reduce((previous, key) => {
-      if (isObject(obj[key])) {
-        return `${previous}\n${indent.repeat(level - 1)}    ${key}: ${printObject(obj[key], level + 1)}`;
-      }
-      return `${previous}\n${indent.repeat(level - 1)}    ${key}: ${obj[key]}`;
-    }, '');
-    return `{${result}\n${indent.repeat(level - 1)}}`;
-  }
-
-  // function printUnchanged(key, obj1, level) {
-  //   return `\n${indent.repeat(level - 1)}    ${key}: ${obj1}`;
-  // }
-
-  // function printAdded(key, obj2, level) {
-  //   if (isObject(obj2)) {
-  //     return `\n${indent.repeat(level - 1)}  + ${key}: ${printObject(obj2, level + 1)}`;
-  //   } return `\n${indent.repeat(level - 1)}  + ${key}: ${obj2}`;
-  // }
-
-  // function printDelete(key, obj1, level) {
-  //   if (isObject(obj1)) {
-  //     return `\n${indent.repeat(level - 1)}  - ${key}: ${printObject(obj1, level + 1)}`;
-  //   } return `\n${indent.repeat(level - 1)}  - ${key}: ${obj1}`;
-  // }
-
-  function printSingleLine(key, value, level, prefix) {
-    if (isObject(value)) {
-      return `\n${indent.repeat(level - 1)}${prefix}${key}: ${printObject(value, level + 1)}`;
-    }
-    return `\n${indent.repeat(level - 1)}${prefix}${key}: ${value}`;
-  }
-
-  function printChanged(key, obj1, obj2, level) {
-    return `${printSingleLine(key, obj1, level, prefixes.deleted)}${printSingleLine(key, obj2, level, prefixes.added)}`;
-  }
+  const { indent } = settings;
 
   function iter(changings, level) {
     // eslint-disable-next-line array-callback-return, consistent-return
