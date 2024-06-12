@@ -12,5 +12,6 @@ export default function genDiff(file1, file2, format = 'stylish') {
   const changings = differenceObjects(obj1, obj2);
   if (format === 'stylish') return `${formStylish(changings)}`;
   if (format === 'plain') return `${formPlain(changings)}`;
-  if (format === 'json') return formJson(changings);
+  // if (format === 'json') return formJson(changings);
+  return changings;
 }

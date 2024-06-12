@@ -1,5 +1,13 @@
 import _ from 'lodash';
-import { isObject } from '../differencers.js';
+import isObject from '../utils.js';
+import {
+  getStatus,
+  getOldValue,
+  getNewValue,
+  getKeyName,
+  getUnchangedValue,
+  getInnerChangings,
+} from '../differencers.js';
 
 const INDENT = '    ';
 
@@ -38,16 +46,15 @@ export function formStylish(changingsTree) {
   const levelInitial = 1;
 
   function iter(changings, level) {
-    const keys = _.sortBy(Object.keys(changings));
     let result = '';
 
-    keys.forEach((key) => {
-      if (changings[key].status === 'nested') {
-        result += `\n${INDENT.repeat(level - 1)}    ${key}: ${iter(changings[key].value, level + 1)}`;
-      } else if (changings[key].status === 'changed') result += printChanged(key, changings[key].oldValue, changings[key].newValue, level);
-      else if (changings[key].status === 'unchanged') result += printUnchanged(key, changings[key].value, level);
-      else if (changings[key].status === 'added') result += printAdded(key, changings[key].newValue, level);
-      else if (changings[key].status === 'deleted') result += printDelete(key, changings[key].oldValue, level);
+    changings.forEach((key) => {
+      if (getStatus(key) === 'nested') {
+        result += `\n${INDENT.repeat(level - 1)}    ${getKeyName(key)}: ${iter(getInnerChangings(key), level + 1)}`;
+      } else if (getStatus(key) === 'changed') result += printChanged(getKeyName(key), getOldValue(key), getNewValue(key), level);
+      else if (getStatus(key) === 'unchanged') result += printUnchanged(getKeyName(key), getUnchangedValue(key), level);
+      else if (getStatus(key) === 'added') result += printAdded(getKeyName(key), getNewValue(key), level);
+      else if (getStatus(key) === 'deleted') result += printDelete(getKeyName(key), getOldValue(key), level);
     });
     return `{${result}\n${INDENT.repeat(level - 1)}}`;
   }

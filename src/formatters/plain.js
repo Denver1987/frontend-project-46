@@ -1,5 +1,12 @@
 import _ from 'lodash';
-import { isObject } from '../differencers.js';
+import isObject from '../utils.js';
+import {
+  getStatus,
+  getOldValue,
+  getNewValue,
+  getKeyName,
+  getInnerChangings,
+} from '../differencers.js';
 
 function closeInBrackets(value) {
   if (typeof value === 'string') return `'${value}'`;
@@ -23,17 +30,19 @@ function printChanged(prop, oldValue, newValue, propPrefix) {
 
 export default function formPlain(changingsTree) {
   const propPrefixInitial = '';
+  console.log(changingsTree);
   function iter(changings, propPrefix) {
-    const keys = _.sortBy(Object.keys(changings));
-    let result = '';
-    keys.forEach((key) => {
-      if (changings[key].status === 'nested') {
-        result += iter(changings[key].value, `${propPrefix}${key}.`);
-      } else if (changings[key].status === 'added') result += `${printAdded(key, changings[key].newValue, propPrefix)}`;
-      else if (changings[key].status === 'deleted') result += `${printDeleted(key, propPrefix)}`;
-      else if (changings[key].status === 'changed') result += `${printChanged(key, changings[key].oldValue, changings[key].newValue, propPrefix)}`;
-    });
-    return result;
+    // eslint-disable-next-line array-callback-return
+    return changings.reduce((previous ,key) => {
+      console.log(key, ' | ', previous)
+      if (getStatus(key) === 'nested') {
+        const newPropPrefix = `${propPrefix}${getKeyName(key)}.`;
+        return `${previous}${iter(getInnerChangings(key), newPropPrefix)}`;
+      } if (getStatus(key) === 'added') return `${previous}${printAdded(getKeyName(key), getNewValue(key), propPrefix)}`;
+      if (getStatus(key) === 'deleted') return `${previous}${printDeleted(getKeyName(key), propPrefix)}`;
+      if (getStatus(key) === 'changed') return `${previous}${printChanged(getKeyName(key), getOldValue(key), getNewValue(key), propPrefix)}`;
+      if (getStatus(key) === 'unchanged') return `${previous}`;
+    }, '');
   }
-  return `${iter(changingsTree, propPrefixInitial).slice(0, -1)}`;
+  return iter(changingsTree, propPrefixInitial).slice(0, -1);
 }
