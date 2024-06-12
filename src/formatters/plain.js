@@ -29,7 +29,6 @@ function printChanged(prop, oldValue, newValue, propPrefix) {
 
 export default function formPlain(changingsTree) {
   const propPrefixInitial = '';
-  console.log(changingsTree);
   function iter(changings, propPrefix) {
     // eslint-disable-next-line array-callback-return, consistent-return
     return changings.reduce((previous, key) => {
