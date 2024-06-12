@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-// import path from 'node:path';
 
 import genDiff from '../src/gendiff.js';
 
@@ -20,6 +19,5 @@ const options = program.opts();
 program.action((filepath1, filepath2) => {
   const diff = genDiff(filepath1, filepath2, options.format);
   console.log(diff);
-  // console.log(options);
 });
 program.parse();
