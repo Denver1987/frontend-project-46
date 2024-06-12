@@ -14,13 +14,13 @@ export default function formStylish(changingsTree) {
 
   function printObject(obj, level) {
     const keys = Object.keys(obj);
-    let result = '{';
-    keys.forEach((key) => {
+    const result = keys.reduce((previous, key) => {
       if (isObject(obj[key])) {
-        result += `\n${indent.repeat(level - 1)}    ${key}: ${printObject(obj[key], level + 1)}`;
-      } else result += `\n${indent.repeat(level - 1)}    ${key}: ${obj[key]}`;
-    });
-    return `${result}\n${indent.repeat(level - 1)}}`;
+        return `${previous}\n${indent.repeat(level - 1)}    ${key}: ${printObject(obj[key], level + 1)}`;
+      }
+      return `${previous}\n${indent.repeat(level - 1)}    ${key}: ${obj[key]}`;
+    }, '');
+    return `{${result}\n${indent.repeat(level - 1)}}`;
   }
 
   function printUnchanged(key, obj1, level) {
