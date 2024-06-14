@@ -26,6 +26,24 @@ function printChanged(prop, oldValue, newValue, propPrefix) {
   return `Property '${propPrefix}${prop}' was updated. From ${closeInBrackets(oldValue)} to ${closeInBrackets(newValue)}\n`;
 }
 
+// eslint-disable-next-line consistent-return
+function printLine(status, prop, value, propPrefix) {
+  if (status === 'changed') {
+    const [oldValue, newValue] = value;
+    if (isObject(oldValue)) return `Property '${propPrefix}${prop}' was updated. From [complex value] to ${closeInBrackets(newValue)}\n`;
+    if (isObject(newValue)) return `Property '${propPrefix}${prop}' was updated. From ${closeInBrackets(oldValue)} to [complex value]\n`;
+    return `Property '${propPrefix}${prop}' was updated. From ${closeInBrackets(oldValue)} to ${closeInBrackets(newValue)}\n`;
+  }
+  if (status === 'added') {
+    if (isObject(value)) return `Property '${propPrefix}${prop}' was added with value: [complex value]\n`;
+    return `Property '${propPrefix}${prop}' was added with value: ${closeInBrackets(value)}\n`;
+  }
+  if (status === 'deleted') {
+    return `Property '${propPrefix}${prop}' was removed\n`;
+  }
+  if (status === 'unchanged') return '';
+}
+
 export default function formPlain(changingsTree) {
   const propPrefixInitial = '';
   function iter(changings, propPrefix) {
@@ -34,10 +52,7 @@ export default function formPlain(changingsTree) {
       if (getStatus(changing) === 'nested') {
         const newPropPrefix = `${propPrefix}${getKeyName(changing)}.`;
         return `${previous}${iter(getInnerChangings(changing), newPropPrefix)}`;
-      } if (getStatus(changing) === 'added') return `${previous}${printAdded(getKeyName(changing), getValue(changing), propPrefix)}`;
-      if (getStatus(changing) === 'deleted') return `${previous}${printDeleted(getKeyName(changing), propPrefix)}`;
-      if (getStatus(changing) === 'changed') return `${previous}${printChanged(getKeyName(changing), ...getValue(changing), propPrefix)}`;
-      if (getStatus(changing) === 'unchanged') return `${previous}`;
+      } return `${previous}${printLine(getStatus(changing), getKeyName(changing), getValue(changing), propPrefix)}`;
     }, '');
   }
   return iter(changingsTree, propPrefixInitial).slice(0, -1);
