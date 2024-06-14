@@ -30,7 +30,7 @@ function printObject(obj, level) {
 function printLine(key, value, level, prefix) {
   if (isArray(value)) {
     const [valueOld, valueNew] = value;
-    return `${printLine(key, valueOld, level, prefixes.deleted)}${printLine(key, valueNew, level, prefixes.added)}`;
+    return `${printLine(key, valueOld, level, 'deleted')}${printLine(key, valueNew, level, 'added')}`;
   }
   if (isObject(value)) {
     return `\n${settings.indent.repeat(level - 1)}${prefixes[prefix]}${key}: ${printObject(value, level + 1)}`;
