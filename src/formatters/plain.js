@@ -11,21 +11,6 @@ function closeInBrackets(value) {
   return value;
 }
 
-function printAdded(prop, value, propPrefix) {
-  if (isObject(value)) return `Property '${propPrefix}${prop}' was added with value: [complex value]\n`;
-  return `Property '${propPrefix}${prop}' was added with value: ${closeInBrackets(value)}\n`;
-}
-
-function printDeleted(prop, propPrefix) {
-  return `Property '${propPrefix}${prop}' was removed\n`;
-}
-
-function printChanged(prop, oldValue, newValue, propPrefix) {
-  if (isObject(oldValue)) return `Property '${propPrefix}${prop}' was updated. From [complex value] to ${closeInBrackets(newValue)}\n`;
-  if (isObject(newValue)) return `Property '${propPrefix}${prop}' was updated. From ${closeInBrackets(oldValue)} to [complex value]\n`;
-  return `Property '${propPrefix}${prop}' was updated. From ${closeInBrackets(oldValue)} to ${closeInBrackets(newValue)}\n`;
-}
-
 // eslint-disable-next-line consistent-return
 function printLine(status, prop, value, propPrefix) {
   if (status === 'changed') {
