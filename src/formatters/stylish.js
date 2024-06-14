@@ -1,11 +1,9 @@
-import isObject from '../utils.js';
+import { isObject, isArray } from '../utils.js';
 import {
   getStatus,
-  getOldValue,
-  getNewValue,
   getKeyName,
-  getUnchangedValue,
   getInnerChangings,
+  getValue,
 } from '../differencers.js';
 
 const settings = {
@@ -29,15 +27,15 @@ function printObject(obj, level) {
   return `{${result}\n${settings.indent.repeat(level - 1)}}`;
 }
 
-function printSingleLine(key, value, level, prefix) {
-  if (isObject(value)) {
-    return `\n${settings.indent.repeat(level - 1)}${prefix}${key}: ${printObject(value, level + 1)}`;
+function printLine(key, value, level, prefix) {
+  if (isArray(value)) {
+    const [valueOld, valueNew] = value;
+    return `${printLine(key, valueOld, level, prefixes.deleted)}${printLine(key, valueNew, level, prefixes.added)}`;
   }
-  return `\n${settings.indent.repeat(level - 1)}${prefix}${key}: ${value}`;
-}
-
-function printChanged(key, obj1, obj2, level) {
-  return `${printSingleLine(key, obj1, level, prefixes.deleted)}${printSingleLine(key, obj2, level, prefixes.added)}`;
+  if (isObject(value)) {
+    return `\n${settings.indent.repeat(level - 1)}${prefixes[prefix]}${key}: ${printObject(value, level + 1)}`;
+  }
+  return `\n${settings.indent.repeat(level - 1)}${prefixes[prefix]}${key}: ${value}`;
 }
 
 export default function formStylish(changingsTree) {
@@ -46,13 +44,11 @@ export default function formStylish(changingsTree) {
 
   function iter(changings, level) {
     // eslint-disable-next-line array-callback-return, consistent-return
-    const result = changings.reduce((previous, key) => {
-      if (getStatus(key) === 'nested') {
-        return `${previous}\n${indent.repeat(level - 1)}    ${getKeyName(key)}: ${iter(getInnerChangings(key), level + 1)}`;
-      } if (getStatus(key) === 'changed') return `${previous}${printChanged(getKeyName(key), getOldValue(key), getNewValue(key), level)}`;
-      if (getStatus(key) === 'unchanged') return `${previous}${printSingleLine(getKeyName(key), getUnchangedValue(key), level, prefixes.unchanged)}`;
-      if (getStatus(key) === 'added') return `${previous}${printSingleLine(getKeyName(key), getNewValue(key), level, prefixes.added)}`;
-      if (getStatus(key) === 'deleted') return `${previous}${printSingleLine(getKeyName(key), getOldValue(key), level, prefixes.deleted)}`;
+    const result = changings.reduce((previous, changing) => {
+      if (getStatus(changing) === 'nested') {
+        return `${previous}\n${indent.repeat(level - 1)}    ${getKeyName(changing)}: ${iter(getInnerChangings(changing), level + 1)}`;
+      }
+      return `${previous}${printLine(getKeyName(changing), getValue(changing), level, getStatus(changing))}`;
     }, '');
     return `{${result}\n${indent.repeat(level - 1)}}`;
   }

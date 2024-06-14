@@ -1,10 +1,9 @@
-import isObject from '../utils.js';
+import { isObject } from '../utils.js';
 import {
   getStatus,
-  getOldValue,
-  getNewValue,
   getKeyName,
   getInnerChangings,
+  getValue,
 } from '../differencers.js';
 
 function closeInBrackets(value) {
@@ -31,14 +30,14 @@ export default function formPlain(changingsTree) {
   const propPrefixInitial = '';
   function iter(changings, propPrefix) {
     // eslint-disable-next-line array-callback-return, consistent-return
-    return changings.reduce((previous, key) => {
-      if (getStatus(key) === 'nested') {
-        const newPropPrefix = `${propPrefix}${getKeyName(key)}.`;
-        return `${previous}${iter(getInnerChangings(key), newPropPrefix)}`;
-      } if (getStatus(key) === 'added') return `${previous}${printAdded(getKeyName(key), getNewValue(key), propPrefix)}`;
-      if (getStatus(key) === 'deleted') return `${previous}${printDeleted(getKeyName(key), propPrefix)}`;
-      if (getStatus(key) === 'changed') return `${previous}${printChanged(getKeyName(key), getOldValue(key), getNewValue(key), propPrefix)}`;
-      if (getStatus(key) === 'unchanged') return `${previous}`;
+    return changings.reduce((previous, changing) => {
+      if (getStatus(changing) === 'nested') {
+        const newPropPrefix = `${propPrefix}${getKeyName(changing)}.`;
+        return `${previous}${iter(getInnerChangings(changing), newPropPrefix)}`;
+      } if (getStatus(changing) === 'added') return `${previous}${printAdded(getKeyName(changing), getValue(changing), propPrefix)}`;
+      if (getStatus(changing) === 'deleted') return `${previous}${printDeleted(getKeyName(changing), propPrefix)}`;
+      if (getStatus(changing) === 'changed') return `${previous}${printChanged(getKeyName(changing), ...getValue(changing), propPrefix)}`;
+      if (getStatus(changing) === 'unchanged') return `${previous}`;
     }, '');
   }
   return iter(changingsTree, propPrefixInitial).slice(0, -1);

@@ -1,17 +1,17 @@
 import _ from 'lodash';
-import isObject from './utils.js';
+import { isObject } from './utils.js';
 
 // eslint-disable-next-line consistent-return
-function getChanging(key, obj1, obj2) {
+function makeChanging(key, obj1, obj2) {
   if (Object.hasOwn(obj1, key) && !Object.hasOwn(obj2, key)) {
     return [key, {
       status: 'deleted',
-      oldValue: obj1[key],
+      value: obj1[key],
     }];
   } if (!Object.hasOwn(obj1, key) && Object.hasOwn(obj2, key)) {
     return [key, {
       status: 'added',
-      newValue: obj2[key],
+      value: obj2[key],
     }];
   } if (obj1[key] === obj2[key]) {
     return [key, {
@@ -21,8 +21,7 @@ function getChanging(key, obj1, obj2) {
   } if (obj1[key] !== obj2[key]) {
     return [key, {
       status: 'changed',
-      oldValue: obj1[key],
-      newValue: obj2[key],
+      value: [obj1[key], obj2[key]],
     }];
   }
 }
@@ -40,16 +39,26 @@ export function differenceObjects(obj1, obj2) {
         }];
     }
 
-    return getChanging(key, obj1, obj2);
+    return makeChanging(key, obj1, obj2);
   });
 }
 
-export function getStatus(chenging) {
-  return chenging[1].status;
+export function getStatus(changing) {
+  return changing[1].status;
 }
 
-export function getKeyName(chenging) {
-  return chenging[0];
+export function getKeyName(changing) {
+  return changing[0];
+}
+
+export function getValue(changing) {
+  switch (getStatus(changing)) {
+    case 'added':
+    case 'deleted':
+    case 'unchanged':
+    case 'changed': return changing[1].value;
+    default: throw new Error('Нераспознанный статус изменения или узел содержит вложенный объект.');
+  }
 }
 
 export function getOldValue(chenging) {
@@ -66,4 +75,8 @@ export function getUnchangedValue(chenging) {
 
 export function getInnerChangings(changing) {
   return changing[1].child;
+}
+
+export function getChangingValues(changing) {
+  return [changing[1].oldValue, changing[1].newValue];
 }
