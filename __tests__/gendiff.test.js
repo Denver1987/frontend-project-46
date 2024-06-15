@@ -25,7 +25,7 @@ test('testJsonComplexStylish', () => {
 
 const testFilePath2 = getFilePath('yamlComplex/file1.yml');
 
-const testChangedPath2 = getFilePath('yamlComplex/changing1.yml');
+const testChangedPath2 = getFilePath('yamlComplex/changing1.yaml');
 
 const testResultPath2 = getFilePath('yamlComplex/result1.txt');
 
