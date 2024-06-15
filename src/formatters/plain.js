@@ -11,17 +11,19 @@ function closeInBrackets(value) {
   return value;
 }
 
+function bringToRequired(value) {
+  if (isObject(value)) return '[complex value]';
+  return closeInBrackets(value);
+}
+
 // eslint-disable-next-line consistent-return
 function printLine(status, prop, value, propPrefix) {
   if (status === 'changed') {
     const [oldValue, newValue] = value;
-    if (isObject(oldValue)) return `Property '${propPrefix}${prop}' was updated. From [complex value] to ${closeInBrackets(newValue)}\n`;
-    if (isObject(newValue)) return `Property '${propPrefix}${prop}' was updated. From ${closeInBrackets(oldValue)} to [complex value]\n`;
-    return `Property '${propPrefix}${prop}' was updated. From ${closeInBrackets(oldValue)} to ${closeInBrackets(newValue)}\n`;
+    return `Property '${propPrefix}${prop}' was updated. From ${bringToRequired(oldValue)} to ${bringToRequired(newValue)}\n`;
   }
   if (status === 'added') {
-    if (isObject(value)) return `Property '${propPrefix}${prop}' was added with value: [complex value]\n`;
-    return `Property '${propPrefix}${prop}' was added with value: ${closeInBrackets(value)}\n`;
+    return `Property '${propPrefix}${prop}' was added with value: ${bringToRequired(value)}\n`;
   }
   if (status === 'deleted') {
     return `Property '${propPrefix}${prop}' was removed\n`;

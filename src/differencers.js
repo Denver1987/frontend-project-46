@@ -21,13 +21,11 @@ function makeChanging(key, obj1, obj2) {
       status: 'unchanged',
       value: obj2[key],
     };
-  } if (obj1[key] !== obj2[key]) {
-    return {
-      key,
-      status: 'changed',
-      value: [obj1[key], obj2[key]],
-    };
-  }
+  } return {
+    key,
+    status: 'changed',
+    value: [obj1[key], obj2[key]],
+  };
 }
 
 export function differenceObjects(obj1, obj2) {
