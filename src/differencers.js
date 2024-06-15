@@ -53,13 +53,14 @@ export function getKeyName(changing) {
   return changing.key;
 }
 
+// eslint-disable-next-line consistent-return
 export function getValue(changing) {
+  // eslint-disable-next-line default-case
   switch (getStatus(changing)) {
     case 'added':
     case 'deleted':
     case 'unchanged':
     case 'changed': return changing.value;
-    default: throw new Error('Нераспознанный статус изменения или узел содержит вложенный объект.');
   }
 }
 

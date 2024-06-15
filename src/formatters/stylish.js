@@ -50,6 +50,7 @@ export default function formStylish(changingsTree) {
       }
       return `${previous}${printLine(getKeyName(changing), getValue(changing), level, getStatus(changing))}`;
     }, '');
+
     return `{${result}\n${indent.repeat(level - 1)}}`;
   }
   return iter(changingsTree, levelInitial);
