@@ -16,6 +16,12 @@ const prefixes = {
   added: '  + ',
 };
 
+/**
+ * Формирует строку, содержащюю объект уровня вложенности level
+ * @param {Object} obj объект, который требуется вывести на печать
+ * @param {number} level уровень вложенности
+ * @returns {string}
+ */
 function printObject(obj, level) {
   const keys = Object.keys(obj);
   const result = keys.reduce((previous, key) => {
@@ -27,17 +33,30 @@ function printObject(obj, level) {
   return `{${result}\n${settings.indent.repeat(level - 1)}}`;
 }
 
-function printLine(key, value, level, prefix) {
+/**
+ * Формирует строку, описывающюю изменение в виде пары ключ: значение
+ * @param {string} prop свойство
+ * @param {*} value изменившееся значение
+ * @param {number} level уровень вложенности
+ * @param {string} prefix тип изменений
+ * @returns {string}
+ */
+function printLine(prop, value, level, prefix) {
   if (isArray(value)) {
     const [valueOld, valueNew] = value;
-    return `${printLine(key, valueOld, level, 'deleted')}${printLine(key, valueNew, level, 'added')}`;
+    return `${printLine(prop, valueOld, level, 'deleted')}${printLine(prop, valueNew, level, 'added')}`;
   }
   if (isObject(value)) {
-    return `\n${settings.indent.repeat(level - 1)}${prefixes[prefix]}${key}: ${printObject(value, level + 1)}`;
+    return `\n${settings.indent.repeat(level - 1)}${prefixes[prefix]}${prop}: ${printObject(value, level + 1)}`;
   }
-  return `\n${settings.indent.repeat(level - 1)}${prefixes[prefix]}${key}: ${value}`;
+  return `\n${settings.indent.repeat(level - 1)}${prefixes[prefix]}${prop}: ${value}`;
 }
 
+/**
+ * Формирует отчет изменений в виде объекта
+ * @param {ChangingList} changingsTree список изменений
+ * @returns {string}
+ */
 export default function formStylish(changingsTree) {
   const levelInitial = 1;
   const { indent } = settings;
